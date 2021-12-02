@@ -5,9 +5,9 @@
  * removed from document.
  * @param {Object} element an element to fade out of. 
  */
-let fade = function(element){
-  var op = 1;  // initial opacity
-  var timer = setInterval(function () {
+const fade = function(element){
+  let op = 1;  // initial opacity
+  let timer = setInterval(function () {
       if (op <= 0.1){
           clearInterval(timer);
           element.style.display = "none";
@@ -25,7 +25,7 @@ let fade = function(element){
  * by using opacity.
  * @param {Object} element an element to fade into
  */
-let unfade = function(element){
+const unfade = function(element){
   let op = 0.1;  // initial opacity
   element.style.display = 'block';
   let timer = setInterval(function () {
@@ -44,7 +44,7 @@ let unfade = function(element){
  * any content you want it to using a 'blob' bound to an anchor tag
  * inside the document.
  */
-let downloadFile = function(){
+const downloadFile = function(){
   const content = 'This is our file content';
   const fileExtension = ".txt";
   const type = `${fileExtension};charset=utf-8`;
@@ -59,3 +59,24 @@ let downloadFile = function(){
     anchor.click();
 }
 
+/**
+ * Will smoothly scroll to an element on the document.
+ * @param {Object} element our selected document element to scroll to. 
+ * @param {Integer} duration the duration time for the scrolling effect. 
+ */
+const scrollSmooth = (element, duration) => {
+  const yPosition = window.pageYOffset + document.getElementById(element.id).getBoundingClientRect().top;
+  const startingY = window.pageYOffset;
+  const diff = yPosition - startingY;
+  let start;
+
+  window.requestAnimationFrame(function step(timestamp){
+    if(!start) 
+      start = timestamp;
+    let time = timestamp - start;
+    let percent = Math.min(time / duration, 1);
+    window.scrollTo(0, startingY + diff * percent);
+    if(time < duration)
+      window.requestAnimationFrame(step);
+  })
+}
